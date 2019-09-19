@@ -1,7 +1,6 @@
 KEY_TO_EDIT = "" #eg compat
 NEW_KEY_VALUE = "" #eg 8.1.0
 
-#web handling
 import os, sys, shutil, json
 import urllib.request 
 opener = urllib.request.build_opener()
@@ -24,12 +23,10 @@ def download(fileURL, filename):
         print(e)
         return None
 
-#Download the appstore json, uses etagging to check if it needs an update to minimize bandwidth
 store_json = download(appstore_repo_url, "repo.json")
 if not store_json:
     sys.exit("Failed to download appstore json")
 
-#Parse the json into categories
 repo_parser = parser()
 repo_parser.load(store_json)
 
