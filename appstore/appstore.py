@@ -255,6 +255,27 @@ class appstore_handler(object):
                 print("Found packages -\n{}".format(json.dumps(packages, indent = 4)))
             return packages
 
+    def edit_info(self, package, key, value):
+        if not self.check_path(): return self.warn_path_not_set()
+        packagedir = os.path.join(self.base_install_path, PACKAGES_DIR)
+        packagesdir = os.path.join(self.base_install_path, PACKAGES_DIR)
+        packagedir = os.path.join(packagesdir, package)
+        pkg = os.path.join(packagedir, PACKAGE_INFO)
+
+        try:
+            with open(pkg, encoding="utf-8") as infojson:
+                info = json.load(infojson)
+        except Exception as e:
+            print("Failed to open repo data for {} - {}".format(package, e))
+            return
+
+        info[key] = value
+
+        with open(pkg, "w", encoding ="utf-8") as infojson:
+            json.dump(info, infojson)
+
+        print(json.dumps(info, indent = 4))
+
 
     def clean_version(self, ver, name):
         ver = ver.lower().strip("v")
